@@ -1,7 +1,10 @@
 *.o
 *~
 .depend
-.*.cmd 
-*.ko 
+*.cmd
+*.ko
 *.mod.c
 .tmp_versions
+tags
+cscope.*
+*.swp

@@ -2,7 +2,7 @@
 # $Id: scull_load,v 1.4 2004/11/03 06:19:49 rubini Exp $
 module="scull"
 device="scull"
-mode="664"
+mode="666"
 
 # Group: since distributions do it differently, look for wheel or use staff
 if grep -q '^staff:' /etc/group; then
