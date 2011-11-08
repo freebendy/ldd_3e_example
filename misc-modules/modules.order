@@ -1,0 +1,10 @@
+kernel//mnt/benAdd/ldd_3e_examples/misc-modules/hello.ko
+kernel//mnt/benAdd/ldd_3e_examples/misc-modules/hellop.ko
+kernel//mnt/benAdd/ldd_3e_examples/misc-modules/seq.ko
+kernel//mnt/benAdd/ldd_3e_examples/misc-modules/jit.ko
+kernel//mnt/benAdd/ldd_3e_examples/misc-modules/sleepy.ko
+kernel//mnt/benAdd/ldd_3e_examples/misc-modules/complete.ko
+kernel//mnt/benAdd/ldd_3e_examples/misc-modules/silly.ko
+kernel//mnt/benAdd/ldd_3e_examples/misc-modules/kdatasize.ko
+kernel//mnt/benAdd/ldd_3e_examples/misc-modules/kdataalign.ko
+kernel//mnt/benAdd/ldd_3e_examples/misc-modules/faulty.ko
