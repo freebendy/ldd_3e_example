@@ -1,0 +1,47 @@
+1. mark the CFLAGS in makefile
+EXTRA_CFLAGS += $(DEBFLAGS)
+EXTRA_CFLAGS += -I$(LDDINC)
+
+2. add include in pipe.c, access.c
+#include <linux/sched.h>
+
+3. in Directory /usr/src/$(shell uname -r)
+ln -s autoconf.h config.h
+
+4. in access.c
+replace current->uid with current->cred->uid
+replace current->euid with current->cred->euid
+
+5. chmod 744 scull_load
+
+6. in file scull_load, line 5
+replace mode="664" with mode="666"
+
+7. chmod 744 scull_unload
+
+8. sudo ./scull_load
+
+9. ls /dev/sc*
+
+10. sudo ./scull_unload
+
+ref:http://blog.csdn.net/lxmky/archive/2010/06/17/5675706.aspx
+
+11. in jit.c
+#include <linux/sched.h>
+
+12. remove jiq.o in Makefile
+
+13. in kdatasize.c and kdatalign.c
+error: ¡¥system_utsname¡¦ undeclared 
+-               system_utsname.machine,
++               init_uts_ns.name.machine,
+
+cat /proc/devices
+sudo mknod /dev/sleepy c 251 0
+
+14. setlevel.c, inp.c, outp.c
+
+15. Replace # include <asm/io.h> by # include <sys/io.h>
+or in /usr/include/asm
+sudo ln -s ../sys/io.h io.h

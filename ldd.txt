@@ -1,0 +1,19 @@
+ubuntu 11.10 LDD exmaples 编译错误解决：
+1.Makefile中的CFLAGS -> EXTRA_CFLAGS
+2.注释掉#include <linux/config.h>，如果需要加上#include <linux/version.h>
+3.init_MUTEX的错误
+	A.修改usr/src/linux-<version>/include/linux/fs.h，
+	#include <linux/semaphore.h>
+	#define init_MUTEX(LOCKNAME) sema_init (LOCKNAME, 1);
+	B.在错误的文件加上：
+	#define init_MUTEX(LOCKNAME) sema_init (LOCKNAME, 1);
+4.ioctl错误：ioctl->unlocked_ioctl
+5.TASK_INTERRUPTIBLE错误，加上头文件#include <linux/sched.h>
+6.struct task_struct错误，
+	current->uid to current->cred->uid 
+	current->euid to current->cred->euid
+7.SPIN_LOCK_UNLOCKED未定义
+	包含#include <linux/spinlock_types.h>，
+	static spinlock_t scull_c_lock = SPIN_LOCK_UNLOCKED;
+	改成
+	DEFINE_SPINLOCK(scull_c_lock); 
