@@ -15,7 +15,7 @@
  * $Id: _main.c.in,v 1.21 2004/10/14 20:11:39 corbet Exp $
  */
 
-#include <linux/config.h>
+//#include <linux/config.h>
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/init.h>
@@ -471,7 +471,7 @@ struct file_operations scullp_fops = {
 	.llseek =    scullp_llseek,
 	.read =	     scullp_read,
 	.write =     scullp_write,
-	.ioctl =     scullp_ioctl,
+	.unlocked_ioctl =     scullp_ioctl,
 	.mmap =	     scullp_mmap,
 	.open =	     scullp_open,
 	.release =   scullp_release,
