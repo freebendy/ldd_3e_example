@@ -71,6 +71,7 @@ int sleepy_init(void)
 		return result;
 	if (sleepy_major == 0)
 		sleepy_major = result; /* dynamic */
+    printk(KERN_DEBUG "sleepy_init - sleepy_major: %d", sleepy_major);
 	return 0;
 }
 
