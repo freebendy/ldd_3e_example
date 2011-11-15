@@ -8,5 +8,5 @@
 tags
 cscope.*
 *.swp
-modules.order
-Module.symvers
+*modules.order
+*Module.symvers
