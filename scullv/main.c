@@ -15,7 +15,7 @@
  * $Id: _main.c.in,v 1.21 2004/10/14 20:11:39 corbet Exp $
  */
 
-#include <linux/config.h>
+//#include <linux/config.h>
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/init.h>
@@ -271,11 +271,10 @@ ssize_t scullv_write (struct file *filp, const char __user *buf, size_t count,
  * The ioctl() implementation
  */
 
-int scullv_ioctl (struct inode *inode, struct file *filp,
-                 unsigned int cmd, unsigned long arg)
+long scullv_ioctl (struct file *filp, unsigned int cmd, unsigned long arg)
 {
 
-	int err = 0, ret = 0, tmp;
+	long err = 0, ret = 0, tmp;
 
 	/* don't even decode wrong cmds: better returning  ENOTTY than EFAULT */
 	if (_IOC_TYPE(cmd) != SCULLV_IOC_MAGIC) return -ENOTTY;
@@ -400,15 +399,16 @@ loff_t scullv_llseek (struct file *filp, loff_t off, int whence)
 struct async_work {
 	struct kiocb *iocb;
 	int result;
-	struct work_struct work;
+	struct delayed_work work;
 };
 
 /*
  * "Complete" an asynchronous operation.
  */
-static void scullv_do_deferred_op(void *p)
+static void scullv_do_deferred_op(struct work_struct *work)
 {
-	struct async_work *stuff = (struct async_work *) p;
+    struct delayed_work *dwork = to_delayed_work(work);
+	struct async_work *stuff = container_of(dwork, struct async_work, work);
 	aio_complete(stuff->iocb, stuff->result, 0);
 	kfree(stuff);
 }
@@ -436,7 +436,7 @@ static int scullv_defer_op(int write, struct kiocb *iocb, char __user *buf,
 		return result; /* No memory, just complete now */
 	stuff->iocb = iocb;
 	stuff->result = result;
-	INIT_WORK(&stuff->work, scullv_do_deferred_op, stuff);
+	INIT_DELAYED_WORK(&stuff->work, scullv_do_deferred_op);
 	schedule_delayed_work(&stuff->work, HZ/100);
 	return -EIOCBQUEUED;
 }
@@ -471,7 +471,7 @@ struct file_operations scullv_fops = {
 	.llseek =    scullv_llseek,
 	.read =	     scullv_read,
 	.write =     scullv_write,
-	.ioctl =     scullv_ioctl,
+	.unlocked_ioctl =     scullv_ioctl,
 	.mmap =	     scullv_mmap,
 	.open =	     scullv_open,
 	.release =   scullv_release,
