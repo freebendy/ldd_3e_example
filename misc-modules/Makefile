@@ -26,7 +26,7 @@ clean:
 else
     # called from kernel build system: just declare what our modules are
     obj-m := hello.o hellop.o seq.o jit.o sleepy.o complete.o \
-             silly.o kdatasize.o kdataalign.o faulty.o #jiq.o
+             silly.o kdatasize.o kdataalign.o faulty.o jiq.o
 endif
 
 
