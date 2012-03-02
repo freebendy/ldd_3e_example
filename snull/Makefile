@@ -9,8 +9,7 @@ else
   DEBFLAGS = -O2
 endif
 
-CFLAGS += $(DEBFLAGS)
-CFLAGS += -I..
+EXTRA_CFLAGS += $(DEBFLAGS) -I..
 
 ifneq ($(KERNELRELEASE),)
 # call from kernel build system
@@ -23,6 +22,7 @@ KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 PWD       := $(shell pwd)
 
 default:
+	echo KERNELDIR = $(KERNELDIR)
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 
 endif

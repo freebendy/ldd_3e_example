@@ -14,8 +14,7 @@
  *
  * $Id: jiq.c,v 1.7 2004/09/26 07:02:43 gregkh Exp $
  */
- 
-//#include <linux/config.h>
+
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/init.h>
@@ -36,7 +35,6 @@ MODULE_LICENSE("Dual BSD/GPL");
  */
 static long delay = 1;
 module_param(delay, long, 0);
-
 
 /*
  * This module is a silly one: it only embeds short code fragments
@@ -74,8 +72,6 @@ static struct clientdata {
 } jiq_data;
 
 #define SCHEDULER_QUEUE ((task_queue *) 1)
-
-
 
 static void jiq_print_tasklet(unsigned long);
 static DECLARE_TASKLET(jiq_tasklet, jiq_print_tasklet, (unsigned long)&jiq_data);
@@ -130,8 +126,6 @@ static void jiq_print_wq(struct work_struct *work)
 	else
 		schedule_work(&jiq_data.work.work);
 }
-
-
 
 static int jiq_read_wq(char *buf, char **start, off_t offset,
                    int len, int *eof, void *data)
