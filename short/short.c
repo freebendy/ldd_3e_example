@@ -56,6 +56,7 @@ module_param(use_mem, int, 0);
 /* default is the first printer port on PC's. "short_base" is there too
    because it's what we want to use in the code */
 static unsigned long base = 0x378;
+//static unsigned long base = 0x37b; // The original port is used by other driver.
 unsigned long short_base = 0;
 module_param(base, long, 0);
 

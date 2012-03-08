@@ -109,28 +109,28 @@ int main(int argc, char **argv)
     setuid(0); /* if we're setuid, force it on */
     for (i=1;i<argc-1;i++) {
         if ( sscanf(argv[i], "%x%n", &port, &n) < 1
-	      || n != strlen(argv[i]) ) {
-	    fprintf(stderr, "%s: argument \"%s\" is not a hex number\n",
-		    argv[0], argv[i]);
-	    error++; continue;
-	}
-	if (port & (size-1)) {
-	    fprintf(stderr, "%s: argument \"%s\" is not properly aligned\n",
-		    argv[0], argv[i]);
-	    error++; continue;
-	}
+	        || n != strlen(argv[i]) ) {
+	        fprintf(stderr, "%s: argument \"%s\" is not a hex number\n",
+		        argv[0], argv[i]);
+	        error++; continue;
+	    }
+	    if (port & (size-1)) {
+	        fprintf(stderr, "%s: argument \"%s\" is not properly aligned\n",
+		        argv[0], argv[i]);
+	        error++; continue;
+	    }
         if ( sscanf(argv[i+1], "%x%n", &val, &n) < 1
-	      || n != strlen(argv[i+1]) ) {
-	    fprintf(stderr, "%s: argument \"%s\" is not a hex number\n",
-		    argv[0], argv[i+1]);
-	    error++; continue;
-	}
-	if (size < 4 && val > (size == 1 ? 0xff : 0xffff)) {
-	    fprintf(stderr, "%s: argument \"%s\" out of range\n",
-		    argv[0], argv[i+1]);
-	    error++; continue;
-	}
-	error += write_one(port, val, size);
+	        || n != strlen(argv[i+1]) ) {
+	        fprintf(stderr, "%s: argument \"%s\" is not a hex number\n",
+		        argv[0], argv[i+1]);
+	        error++; continue;
+	    }
+	    if (size < 4 && val > (size == 1 ? 0xff : 0xffff)) {
+	        fprintf(stderr, "%s: argument \"%s\" out of range\n",
+		        argv[0], argv[i+1]);
+	        error++; continue;
+	    }
+	    error += write_one(port, val, size);
     }
     exit (error ? 1 : 0);
 }
