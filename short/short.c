@@ -56,7 +56,7 @@ module_param(use_mem, int, 0);
 /* default is the first printer port on PC's. "short_base" is there too
    because it's what we want to use in the code */
 static unsigned long base = 0x378;
-//static unsigned long base = 0x37b; // The original port is used by other driver.
+//static unsigned long base = 0x278; // The original port is used by other driver.
 unsigned long short_base = 0;
 module_param(base, long, 0);
 
@@ -340,7 +340,7 @@ irqreturn_t short_interrupt(int irq, void *dev_id)
 
 	do_gettimeofday(&tv);
 
-	    /* Write a 16 byte record. Assume PAGE_SIZE is a multiple of 16 */
+    /* Write a 16 byte record. Assume PAGE_SIZE is a multiple of 16 */
 	written = sprintf((char *)short_head,"%08u.%06u\n",
 			(int)(tv.tv_sec % 100000000), (int)(tv.tv_usec));
 	BUG_ON(written != 16);
@@ -465,6 +465,7 @@ irqreturn_t short_sh_interrupt(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
+// 利用内核探测可用的中断信号线
 void short_kernelprobe(void)
 {
 	int count = 0;
@@ -493,6 +494,7 @@ void short_kernelprobe(void)
 		printk("short: probe failed %i times, giving up\n", count);
 }
 
+// 手动探测中断的处理例程
 irqreturn_t short_probing(int irq, void *dev_id)
 {
 	if (short_irq == 0) short_irq = irq;	/* found */
@@ -500,6 +502,7 @@ irqreturn_t short_probing(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
+// 手动探测
 void short_selfprobe(void)
 {
 	int trials[] = {3, 5, 7, 9, 0};
@@ -608,6 +611,7 @@ int short_init(void)
 	if (short_irq < 0 && probe == 2)
 		short_selfprobe();
 
+    // 中断信号线，如果没有指定，使用默认
 	if (short_irq < 0) /* not yet specified: force the default on */
 		switch(short_base) {
 		    case 0x378: short_irq = 7; break;
@@ -643,7 +647,7 @@ int short_init(void)
 			short_irq = -1;
 		}
 		else { /* actually enable it -- assume this *is* a parallel port */
-			outb(0x10,short_base+2);
+			outb(0x10,short_base+2); //设置端口2的第四位，启用中断报告
 		}
 	}
 
