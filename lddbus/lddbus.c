@@ -46,7 +46,7 @@ static int ldd_hotplug(struct device *dev, char **envp, int num_envp,
  */
 static int ldd_match(struct device *dev, struct device_driver *driver)
 {
-	return !strncmp(dev->bus_id, driver->name, strlen(driver->name));
+	return !strncmp(dev->init_name, driver->name, strlen(driver->name));
 }
 
 
@@ -59,7 +59,7 @@ static void ldd_bus_release(struct device *dev)
 }
 	
 struct device ldd_bus = {
-	.bus_id   = "ldd0",
+	.init_name  = "ldd0",
 	.release  = ldd_bus_release
 };
 
@@ -102,7 +102,7 @@ int register_ldd_device(struct ldd_device *ldddev)
 	ldddev->dev.bus = &ldd_bus_type;
 	ldddev->dev.parent = &ldd_bus;
 	ldddev->dev.release = ldd_dev_release;
-	strncpy(ldddev->dev.bus_id, ldddev->name, BUS_ID_SIZE);
+	strncpy(ldddev->dev.init_name, ldddev->name, BUS_ID_SIZE);
 	return device_register(&ldddev->dev);
 }
 EXPORT_SYMBOL(register_ldd_device);
